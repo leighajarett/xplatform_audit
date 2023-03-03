@@ -42,12 +42,12 @@ class _TCupertinoTabBarState extends State<TCupertinoTabBar> {
   }
 
   List<BottomNavigationBarItem> _items = [
-     BottomNavigationBarItem(
-                      icon: Platform.isIOS
-            ?  Icon(CupertinoIcons.home) : Icon(Icons.home), label: 'Home'),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.adaptive.share), label: 'Settings'),
-  ]
+    BottomNavigationBarItem(
+        icon: Platform.isIOS ? Icon(CupertinoIcons.home) : Icon(Icons.home),
+        label: 'Home'),
+    BottomNavigationBarItem(
+        icon: Icon(Icons.adaptive.share), label: 'Settings'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -70,45 +70,8 @@ class _TCupertinoTabBarState extends State<TCupertinoTabBar> {
                   setState(() => _currentIndex = index);
                   _loadScreen();
                 },
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.home), label: 'Home'),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.adaptive.share), label: 'Settings'),
-                ],
+                items: _items,
               ));
-    // return Platform.isIOS
-    //     ? CupertinoTabScaffold(
-    //         tabBar: CupertinoTabBar(
-    //           items: const <BottomNavigationBarItem>[
-    //             BottomNavigationBarItem(
-    //               icon: Icon(CupertinoIcons.star_fill),
-    //               label: 'Favourites',
-    //             ),
-    //             BottomNavigationBarItem(
-    //               icon: Icon(CupertinoIcons.clock_solid),
-    //               label: 'Recents',
-    //             ),
-    //           ],
-    //         ),
-    //         tabBuilder: (BuildContext context, int index) {
-    //           return CupertinoTabView(
-    //             builder: (BuildContext context) {
-    //               return Center(
-    //                 child: Text(
-    //                   'Content of tab $index',
-    //                   style: CupertinoThemeData().textTheme.textStyle,
-    //                 ),
-    //               );
-    //             },
-    //           );
-    //         },
-    //       )
-    //     : Column(
-    //         children: [
-    //           Text("Material Tab Bar"),
-    //         ],
-    //       );
   }
 }
 
