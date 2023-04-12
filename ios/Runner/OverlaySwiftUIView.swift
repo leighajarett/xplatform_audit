@@ -14,6 +14,7 @@ struct OverlaySwiftUIView: View {
     //    var body: some View {Text("This is SwiftUI")}
     var controlDictionary: [String: AnyView] = [
         "Top App Bar": AnyView(TopAppBar()),
+        "Sliver Top App Bar": AnyView(TopAppBar()),
         "Bottom Tab Bar": AnyView(TabBar()),
         "Alert Dialog": AnyView(AlertDialog()),
     ]
@@ -34,10 +35,16 @@ struct TopAppBar: View {
     var body: some View {
         
         NavigationStack {
-                    NavigationLink("Navigate", value: "AppCircle").navigationTitle("Material App Bar").navigationBarTitleDisplayMode(.large)
+                    NavigationLink("Navigate", value: "AppCircle").navigationTitle("Material App Bar").navigationBarTitleDisplayMode(.inline)
                         .navigationDestination(for: String.self) { value in
                             HStack{
-                                Text("Inline title").navigationTitle("Material App Bar").navigationBarTitleDisplayMode(largeTitle ? .large : .inline)
+                                ScrollView {
+                                        VStack(alignment: .leading) {
+                                            ForEach(0..<100) {
+                                                Text("Row \($0)")
+                                            }
+                                        }
+                                    }.navigationTitle("Material AppBar").navigationBarTitleDisplayMode(largeTitle ? .large : .inline)
                                 Button("Change title") {
                                     largeTitle = !largeTitle
                                 }}
@@ -51,21 +58,38 @@ struct TopAppBar: View {
 struct TabBar :  View {
     var body: some View {
         TabView {
-            Text("Menu")
-                .tabItem {
-                    Label("Menu", systemImage: "house")
+            HStack{
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        ForEach(0..<100) {
+                            Text("Menu \($0)")
+                        }
+                    }
                 }
+            }.tabItem {Label("Menu", systemImage: "house")}
 
-            Text("Order")
-                .tabItem {
-                    Label("Order", systemImage: "square.and.arrow.up")
+            HStack{
+                ScrollView {
+                    VStack(alignment: .leading) {
+                        ForEach(0..<100) {
+                            Text("Row \($0)")
+                        }
+                    }
                 }
+            }.tabItem {Label("Order", systemImage: "square.and.arrow.up")}
         }
     }
 }
 
 struct AlertDialog: View {
+    @State private var showingAlert = false
+
     var body: some View {
-        Text("Alert Dialog")
+        Button("Show Alert") {
+            showingAlert = true
+        }
+        .alert("Important message", isPresented: $showingAlert) {
+            Button("OK", role: .cancel) { }
+        }
     }
 }

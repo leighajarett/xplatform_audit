@@ -2,6 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+var list = ListView.builder(
+  itemCount: 100,
+  itemBuilder: (context, index) {
+    return ListTile(
+      title: Text('Item $index'),
+    );
+  },
+);
+
 // Adaptation between CupertinoNavigationBar and AppBar
 class TCupertinoAppBar extends StatelessWidget {
   const TCupertinoAppBar({Key? key}) : super(key: key);
@@ -39,42 +48,20 @@ class TMaterialAppBar extends StatelessWidget {
 }
 
 // Full Screen Adaptation between CupertinoNavigationBar and AppBar
-class FSTCupertinoAppBar extends StatefulWidget {
+class FSTCupertinoAppBar extends StatelessWidget {
   const FSTCupertinoAppBar({Key? key}) : super(key: key);
-
-  @override
-  State<FSTCupertinoAppBar> createState() => _FSTCupertinoAppBarState();
-}
-
-class _FSTCupertinoAppBarState extends State<FSTCupertinoAppBar> {
-  bool _isLarge = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
-        middle: _isLarge
-            ? null
-            : Text(
-                'Cupertino Navigation Bar',
-              ),
-        leading: _isLarge
-            ? Text(
-                'Cupertino Navigation Bar',
-                style:
-                    CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle,
-              )
-            : null,
+        middle: Text(
+          'Cupertino Navigation Bar',
+        ),
       ),
-      body: ElevatedButton(
-        child: Text("Change title"),
-        onPressed: () {
-          setState(() {
-            _isLarge = !_isLarge;
-          });
-        },
-      ),
+      body: list,
     );
+
     // Can't adapt because of API differences
     // Scaffold(appBar:  Platform.isIOS
     //     ? CupertinoNavigationBar(
@@ -83,41 +70,44 @@ class _FSTCupertinoAppBarState extends State<FSTCupertinoAppBar> {
     //     : AppBar(
     //         title: Text('Material Navigation Bar'),
     //       ),
-    //       body: Container()
+    //       body: list
     //       )
   }
 }
 
 // Full Screen Adaptation Adaptation between themed AppBars
-class FSTMaterialAppBar extends StatefulWidget {
+class FSTMaterialAppBar extends StatelessWidget {
   const FSTMaterialAppBar({Key? key}) : super(key: key);
-
-  @override
-  State<FSTMaterialAppBar> createState() => _FSTMaterialAppBarState();
-}
-
-class _FSTMaterialAppBarState extends State<FSTMaterialAppBar> {
-  bool _isLarge = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // extendBodyBehindAppBar: true,
+      body: list,
       appBar: AppBar(
+        surfaceTintColor: Platform.isIOS ? Colors.transparent : null,
+        shadowColor: Platform.isIOS ? CupertinoColors.darkBackgroundGray : null,
+        scrolledUnderElevation: Platform.isIOS ? .1 : null,
+        toolbarHeight: Platform.isIOS ? 44 : null,
         title: Text(
-          'Material AppBar',
-          style: !_isLarge && Platform.isIOS
-              ? CupertinoTheme.of(context).textTheme.navTitleTextStyle
-              : null,
+          'My AppBar',
         ),
-      ),
-      body: ElevatedButton(
-        child: Text("Change title"),
-        onPressed: () {
-          setState(() {
-            _isLarge = !_isLarge;
-          });
-        },
       ),
     );
   }
 }
+
+
+        // Platform.isIOS
+        //     ? CupertinoTheme.of(context).barBackgroundColor.withOpacity(.97)
+        //     : null,
+        // For making it semitransparent to see the background
+        // elevation: 0,
+        // backgroundColor: Colors.transparent,
+
+        // BackButton is already used in leading by default
+        // Would be nice to be able to customize the back icon used
+        // leading: BackButton(
+        //     // Make correct color
+        //     // color: Platform.isIOS ? Theme.of(context).primaryColor : null,
+        //     ),

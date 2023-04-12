@@ -17,30 +17,49 @@ import 'componentConfig.dart';
 const platform = MethodChannel('overlay_ios.flutter.io/overlay');
 
 TextTheme cupertinoTextTheme = TextTheme(
-  titleLarge: CupertinoThemeData().textTheme.navLargeTitleTextStyle,
-  titleMedium: CupertinoThemeData().textTheme.navTitleTextStyle,
-  // headlineLarge: CupertinoThemeData().textTheme.navLargeTitleTextStyle,
-  // headlineMedium: CupertinoThemeData().textTheme.navTitleTextStyle,
-  // headlineSmall: CupertinoThemeData().textTheme.navActionTextStyle,
-  // displayMedium: CupertinoThemeData().textTheme.textStyle,
-);
+    headlineMedium: CupertinoThemeData()
+        .textTheme
+        .navLargeTitleTextStyle
+        .copyWith(letterSpacing: -1.5),
+    titleLarge: CupertinoThemeData().textTheme.navTitleTextStyle,
+    titleSmall: CupertinoThemeData().textTheme.tabLabelTextStyle);
+
+final Color iosColor = CupertinoThemeData().primaryColor;
+final Map<int, Color> iosColorShades = {
+  50: iosColor.withOpacity(0.1),
+  100: iosColor.withOpacity(0.2),
+  200: iosColor.withOpacity(0.3),
+  300: iosColor.withOpacity(0.4),
+  400: iosColor.withOpacity(0.5),
+  500: iosColor.withOpacity(0.6),
+  600: iosColor.withOpacity(0.7),
+  700: iosColor.withOpacity(0.8),
+  800: iosColor.withOpacity(0.9),
+  900: iosColor.withOpacity(1.0),
+};
 
 ColorScheme cupertinoColorScheme = ColorScheme.fromSwatch(
   backgroundColor: CupertinoThemeData().scaffoldBackgroundColor,
-  // primarySwatch: Colors.blue,
-  primaryColorDark: CupertinoThemeData().primaryColor,
+  primarySwatch: MaterialColor(iosColor.value, iosColorShades),
+  // primarySwatch: CupertinoThemeData().primaryColor,  doesn't work
+  // primarySwatch: Color.fromRGBO(100, 132, 255, 1.0)
 );
 
 void main() {
   runApp(
     MaterialApp(
       title: 'Flutter Demo',
-      home: ParentScreen(),
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: Platform.isIOS ? cupertinoColorScheme : null,
         textTheme: Platform.isIOS ? cupertinoTextTheme : null,
       ),
+      initialRoute: '/',
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/': (context) => const ParentScreen(),
+        '/route-test': (context) => const ParentScreen(),
+      },
     ),
   );
 }
@@ -132,7 +151,8 @@ class _ParentScreenState extends State<ParentScreen> {
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black),
               ),
-              child: _componentName == "Bottom Tab Bar"
+              child: _componentName == "Bottom Tab Bar" ||
+                      _componentName == "Sliver Top App Bar"
                   ? Text("Must use full screen")
                   : displayWidget,
             ),
@@ -192,7 +212,8 @@ class FullScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     if (componentName == 'Top App Bar') {
       return material ? FSTMaterialAppBar() : FSTCupertinoAppBar();
-    } else if (componentName == 'Bottom Tab Bar' && displayWidget != null) {
+    } else if (componentName == 'Bottom Tab Bar' ||
+        componentName == "Sliver Top App Bar" && displayWidget != null) {
       return displayWidget!;
     }
     return Scaffold(

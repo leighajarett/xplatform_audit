@@ -15,9 +15,13 @@ class _TCupertinoTabBarState extends State<TCupertinoTabBar> {
   var _currentIndex = 0;
 
   Widget _homeScreen() {
-    return Center(
-      child: Text('Home Screen'),
-    );
+    return ListView.builder(
+        itemCount: 20,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text('Menu $index'),
+          );
+        });
   }
 
   Widget _settingsScreen() {
@@ -43,10 +47,10 @@ class _TCupertinoTabBarState extends State<TCupertinoTabBar> {
 
   List<BottomNavigationBarItem> _items = [
     BottomNavigationBarItem(
-        icon: Platform.isIOS ? Icon(CupertinoIcons.home) : Icon(Icons.home),
-        label: 'Home'),
-    BottomNavigationBarItem(
-        icon: Icon(Icons.adaptive.share), label: 'Settings'),
+        icon:
+            Platform.isIOS ? Icon(CupertinoIcons.house_fill) : Icon(Icons.home),
+        label: 'Menu'),
+    BottomNavigationBarItem(icon: Icon(Icons.adaptive.share), label: 'Order'),
   ];
 
   @override
@@ -55,8 +59,8 @@ class _TCupertinoTabBarState extends State<TCupertinoTabBar> {
         body: _currentWidget,
         bottomNavigationBar: Platform.isIOS
             ? CupertinoTabBar(
-                border: Border.all(color: Colors.transparent),
-                backgroundColor: CupertinoThemeData().scaffoldBackgroundColor,
+                // border: Border.all(color: Colors.transparent),
+                // backgroundColor: CupertinoThemeData().scaffoldBackgroundColor,
                 currentIndex: _currentIndex,
                 onTap: (index) {
                   setState(() => _currentIndex = index);
@@ -86,9 +90,16 @@ class _TMaterialTabBarState extends State<TMaterialTabBar> {
   var _currentIndex = 0;
 
   Widget _homeScreen() {
-    return Center(
-      child: Text('Home Screen'),
-    );
+    // return Center(
+    //   child: Text('Home Screen'),
+    // );
+    return ListView.builder(
+        itemCount: 20,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text('Menu $index'),
+          );
+        });
   }
 
   Widget _settingsScreen() {
@@ -116,21 +127,39 @@ class _TMaterialTabBarState extends State<TMaterialTabBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _currentWidget,
-      bottomNavigationBar: BottomNavigationBar(
-        // remove elevation, but have no way to control the animation of the taps
-        elevation: Platform.isIOS ? 0 : null,
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() => _currentIndex = index);
-          _loadScreen();
-        },
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Platform.isIOS ? CupertinoIcons.home : Icons.home),
-              label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.adaptive.share), label: 'Settings'),
-        ],
+      bottomNavigationBar: Container(
+        height: Platform.isIOS ? 83 : 108,
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Colors.grey.shade300,
+              width: 1.0,
+            ),
+          ),
+        ),
+        child: BottomNavigationBar(
+          backgroundColor:
+              Platform.isIOS ? CupertinoColors.tertiarySystemBackground : null,
+          iconSize: Platform.isIOS ? 25 : 24,
+          unselectedLabelStyle:
+              CupertinoThemeData().textTheme.tabLabelTextStyle,
+          selectedLabelStyle: CupertinoThemeData().textTheme.tabLabelTextStyle,
+          // remove elevation, but have no way to control the animation of the taps
+          // elevation: Platform.isIOS ? 0 : null,
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() => _currentIndex = index);
+            _loadScreen();
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(
+                    Platform.isIOS ? CupertinoIcons.house_fill : Icons.home),
+                label: 'Menu'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.adaptive.share), label: 'Order'),
+          ],
+        ),
       ),
     );
   }
